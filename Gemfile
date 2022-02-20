@@ -9,4 +9,5 @@ gem 'aoc_rb'
 group :development, :test do
   gem 'rubocop', require: false
   gem 'rubocop-rails', require: false
+  gem 'simplecov', require: false
 end
