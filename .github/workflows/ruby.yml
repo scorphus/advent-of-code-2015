@@ -1,10 +1,6 @@
 name: Ruby
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   test:
@@ -25,3 +21,5 @@ jobs:
         bundler-cache: true
     - name: Run tests
       run: bundle exec rspec -fd
+    - name: Send coverage data to Codecov
+      uses: codecov/codecov-action@v2

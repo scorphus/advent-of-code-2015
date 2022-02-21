@@ -3,6 +3,11 @@
 require 'simplecov'
 SimpleCov.start
 
+if ENV['CI'] == 'true'
+  require 'simplecov-cobertura'
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
+end
+
 Dir[File.join(File.dirname(__FILE__), '..', 'challenges', 'shared', '**', '*.rb')].each do |file|
   require file
 end
