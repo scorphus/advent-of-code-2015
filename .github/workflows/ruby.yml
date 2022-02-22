@@ -19,6 +19,8 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby }}
         bundler-cache: true
+    - name: Run linter
+      run: bundle exec rubocop -l
     - name: Run tests
       run: bundle exec rspec -fd
     - name: Send coverage data to Codecov
