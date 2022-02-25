@@ -43,7 +43,7 @@ module Year2015
       prev_prev = prev = -1
       indexes = {}
       line.split('').map(&:ord).each_with_index do |curr, i|
-        (pair, indexes) = check_pair(prev, curr, i, indexes) unless pair
+        pair, indexes = check_pair(prev, curr, i, indexes) unless pair
         letter = true if curr == prev_prev
         prev_prev = prev
         prev = curr
