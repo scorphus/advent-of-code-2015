@@ -17,7 +17,7 @@ module Year2015
     private
 
     def process_input(line)
-      line.split('x').map(&:to_i).sort
+      line.split("x").map(&:to_i).sort
     end
   end
 end

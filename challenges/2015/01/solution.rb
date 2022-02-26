@@ -4,8 +4,8 @@ module Year2015
   class Day01 < Solution
     def part_one
       floor = 0
-      data.split('').each do |c|
-        if c == '('
+      data.split("").each do |c|
+        if c == "("
           floor += 1
         else
           floor -= 1
@@ -16,8 +16,8 @@ module Year2015
 
     def part_two
       floor = 0
-      data.split('').each_with_index do |c, i|
-        if c == '('
+      data.split("").each_with_index do |c, i|
+        if c == "("
           floor += 1
         else
           floor -= 1

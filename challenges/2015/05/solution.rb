@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'set'
+require "set"
 
 module Year2015
   class Day05 < Solution
@@ -20,36 +20,36 @@ module Year2015
 
     def initialize(input)
       super
-      @vowels = Set['a'.ord, 'e'.ord, 'i'.ord, 'o'.ord, 'u'.ord]
-      @offenders = Set['b'.ord, 'd'.ord, 'q'.ord, 'y'.ord]
+      @vowels = Set["a".ord, "e".ord, "i".ord, "o".ord, "u".ord]
+      @offenders = Set["b".ord, "d".ord, "q".ord, "y".ord]
     end
 
     def nice?(line)
       vowels_count = 0
       dupes = false
       prev = -1
-      line.split('').map(&:ord).each do |curr|
+      line.split("").map(&:ord).each do |curr|
         return false if @offenders.include?(curr) && curr - prev == 1
 
         vowels_count += 1 if @vowels.include?(curr)
         dupes = true if curr == prev
         prev = curr
       end
-      vowels_count >= 3 and dupes
+      (vowels_count >= 3) && dupes
     end
 
     def nicer?(line)
       pair = letter = false
       prev_prev = prev = -1
       indexes = {}
-      line.split('').map(&:ord).each_with_index do |curr, i|
+      line.split("").map(&:ord).each_with_index do |curr, i|
         pair, indexes = check_pair(prev, curr, i, indexes) unless pair
         letter = true if curr == prev_prev
         prev_prev = prev
         prev = curr
         break if pair && letter
       end
-      pair and letter
+      pair && letter
     end
 
     def check_pair(prev, curr, index, indexes)

@@ -5,10 +5,10 @@ module Year2015
     def initialize(input)
       super
       @deltas = {
-        '^' => [0, 1],
-        'v' => [0, -1],
-        '<' => [-1, 0],
-        '>' => [1, 0]
+        "^" => [0, 1],
+        "v" => [0, -1],
+        "<" => [-1, 0],
+        ">" => [1, 0],
       }
     end
 
@@ -41,7 +41,7 @@ module Year2015
     end
 
     def process_input(line)
-      line.split('')
+      line.split("")
     end
   end
 end

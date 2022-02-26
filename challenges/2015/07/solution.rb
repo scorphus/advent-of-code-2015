@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'tsort'
+require "tsort"
 
 class Hash
   include TSort
-  alias tsort_each_node each_key
+  alias_method :tsort_each_node, :each_key
   def tsort_each_child(node, &block)
     fetch(node).each(&block)
   end
@@ -13,14 +13,14 @@ end
 module Year2015
   class Day07 < Solution
     def part_one
-      get_wire('a')
+      get_wire("a")
     end
 
     def part_two
-      a_signal = get_wire('a')
-      @instructions['b'] = a_signal.to_s
+      a_signal = get_wire("a")
+      @instructions["b"] = a_signal.to_s
       @wires = {}
-      get_wire('a')
+      get_wire("a")
     end
 
     private
@@ -32,19 +32,19 @@ module Year2015
       @instructions = {}
       @input =
         input
-        .gsub('AND', '&')
-        .gsub('OR', '|')
-        .gsub('NOT', '~')
-        .gsub('LSHIFT', '<<')
-        .gsub('RSHIFT', '>>')
-        .gsub('do', 'do_')
-        .gsub('if', 'if_')
-        .gsub('in', 'in_')
+          .gsub("AND", "&")
+          .gsub("OR", "|")
+          .gsub("NOT", "~")
+          .gsub("LSHIFT", "<<")
+          .gsub("RSHIFT", ">>")
+          .gsub("do", "do_")
+          .gsub("if", "if_")
+          .gsub("in", "in_")
     end
 
     def process_dataset(set)
       set.each do |line|
-        expression, wire = line.split(' -> ')
+        expression, wire = line.split(" -> ")
         operands = expression.scan(/[a-z_]+/)
         @graph[wire] = operands
         @instructions[wire] = expression

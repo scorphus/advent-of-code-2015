@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'digest'
+require "digest"
 
 module Year2015
   class Day04 < Solution
     def part_one
-      find_number('00000')
+      find_number("00000")
     end
 
     def part_two
-      find_number('000000')
+      find_number("000000")
     end
 
     private
