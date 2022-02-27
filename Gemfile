@@ -8,7 +8,6 @@ gem "aoc_rb"
 
 group :development, :test do
   gem "rubocop", require: false
-  gem "rubocop-rails", require: false
   gem "rubocop-shopify", require: false
   gem "simplecov-cobertura", require: false
 end
