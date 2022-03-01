@@ -26,7 +26,7 @@ RSpec.describe(Year2015::Day13) do
       expect(described_class.part_one(example_input)).to(eq(330))
     end
 
-    it "finds best arrangement with 664 happiness units for example input" do
+    it "finds best arrangement with 664 happiness units for input" do
       expect(described_class.part_one(input)).to(eq(664))
     end
   end
@@ -36,7 +36,7 @@ RSpec.describe(Year2015::Day13) do
       expect(described_class.part_two(example_input)).to(eq(286))
     end
 
-    it "finds best arrangement with 640 happiness units for example input" do
+    it "finds best arrangement with 640 happiness units for input" do
       expect(described_class.part_two(input)).to(eq(640))
     end
   end
