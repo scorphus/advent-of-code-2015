@@ -24,4 +24,15 @@ RSpec.describe(Year2015::Day17) do
       expect(described_class.part_one(input)).to(eq(654))
     end
   end
+
+  describe "part two" do
+    it "finds 3 different ways to fit 25 liters of eggnog in the least number of containers with example input" do
+      stub_const("Year2015::Day17::TOTAL_EGGNOG", 25)
+      expect(described_class.part_two(example_input)).to(eq(3))
+    end
+
+    it "finds 57 different ways to fit 150 liters of eggnog in the least number of containers with input" do
+      expect(described_class.part_two(input)).to(eq(57))
+    end
+  end
 end
