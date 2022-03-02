@@ -17,18 +17,17 @@ module Year2015
 
     def part_one
       data
-      TICKER_TAPE.each do |k, v|
-        @aunts = @aunts.select do |_, things|
+      TICKER_TAPE.reduce(@aunts) do |aunts, (k, v)|
+        aunts.select do |_, things|
           !things.key?(k) || things[k] == v
         end
-      end
-      @aunts.keys.first
+      end.keys.first
     end
 
     def part_two
       data
-      TICKER_TAPE.each do |k, v|
-        @aunts = @aunts.select do |_, things|
+      TICKER_TAPE.reduce(@aunts) do |aunts, (k, v)|
+        aunts.select do |_, things|
           if !things.key?(k)
             true
           elsif k == :cats || k == :trees
@@ -39,8 +38,7 @@ module Year2015
             things[k] == v
           end
         end
-      end
-      @aunts.keys.first
+      end.keys.first
     end
 
     private
