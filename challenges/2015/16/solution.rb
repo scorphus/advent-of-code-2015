@@ -26,7 +26,21 @@ module Year2015
     end
 
     def part_two
-      nil
+      data
+      TICKER_TAPE.each do |k, v|
+        @aunts = @aunts.select do |_, things|
+          if !things.key?(k)
+            true
+          elsif k == :cats || k == :trees
+            things[k] > v
+          elsif k == :pomeranians || k == :goldfish
+            things[k] < v
+          else
+            things[k] == v
+          end
+        end
+      end
+      @aunts.keys.first
     end
 
     private
