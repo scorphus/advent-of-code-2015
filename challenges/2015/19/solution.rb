@@ -13,7 +13,12 @@ module Year2015
     end
 
     def part_two
-      nil
+      @molecule.reduce(0) do |steps, atom|
+        steps += 1 if atom != atom.downcase
+        steps -= 1 if atom == "Rn" || atom == "Ar"
+        steps -= 2 if atom == "Y"
+        steps
+      end - (@molecule.include?("Y") ? 1 : 0)
     end
 
     private
