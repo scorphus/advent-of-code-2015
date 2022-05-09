@@ -5,6 +5,7 @@ module Year2015
     def part_one
       @molecule.each_with_index.each_with_object(Set.new) do |(atom, i), molecules|
         next unless @replacements.key?(atom)
+
         @replacements[atom].each do |replacement|
           molecules << (@molecule[...i] + [replacement] + @molecule[i + 1..]).join
         end

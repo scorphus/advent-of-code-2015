@@ -42,10 +42,12 @@ module Year2015
     def valid_password?(password)
       return false if @offending_characters.include?(password[0])
       return false if @offending_characters.include?(password[1])
+
       has_inc_straight = false
       pairs = Set.new
       password.chars.each_cons(3) do |a, b, c|
         return false if @offending_characters.include?(c)
+
         has_inc_straight = true if @increasing_straights.include?([a, b, c])
         pairs.add([a, b]) if a == b
         pairs.add([b, c]) if b == c

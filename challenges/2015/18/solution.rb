@@ -34,6 +34,7 @@ module Year2015
       grid.each_with_object({}) do |(x, y), neighbors|
         DELTAS.each do |dx, dy|
           next if x + dx < 0 || y + dy < 0 || x + dx >= GRID_SIZE || y + dy >= GRID_SIZE
+
           neighbors[[x + dx, y + dy]] ||= 0
           neighbors[[x + dx, y + dy]] += 1
         end

@@ -7,6 +7,7 @@ module Year2015
       steps = 2 * 10.pow([0, Math.log10(data).to_i - 6].max)
       loop do
         break if 10 * divisors(house).sum > data
+
         house += steps
       end
       house
@@ -17,6 +18,7 @@ module Year2015
       steps = 2 * 10.pow([0, Math.log10(data).to_i - 6].max)
       loop do
         break if 11 * divisors_slice(house, 50).sum > data
+
         house += steps
       end
       house
@@ -37,6 +39,7 @@ module Year2015
     def divisors_slice(n, m)
       (1..Math.sqrt(n).to_i).each_with_object(Set.new) do |d, divisors|
         next unless n % d == 0
+
         divisors << d if n / d <= m
         divisors << n / d if d <= m
         divisors
