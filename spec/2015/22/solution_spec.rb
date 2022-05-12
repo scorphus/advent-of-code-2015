@@ -152,8 +152,8 @@ RSpec.describe(Year2015::Day22) do
   end
 
   describe "part 2" do
-    it "returns nil for my input" do
-      expect(described_class.part_two(input)).to(eq(nil))
+    it "finds 1216 as the least amount of mana I can spend and still win the fight" do
+      expect(described_class.part_two(input)).to(eq(1216))
     end
   end
 end

@@ -54,9 +54,10 @@ module Year2015
   end
 
   class Game
-    def initialize(p1, p2)
+    def initialize(p1, p2, hard_mode = false)
       @p1 = p1
       @p2 = p2
+      @hard_mode = hard_mode
     end
 
     def play_until_p1_wins
@@ -64,6 +65,10 @@ module Year2015
       queue.push([@p1, @p2, {}], 0) # [player, opponent, spells]
       until queue.empty?
         p1, p2, spells = queue.pop
+        if @hard_mode
+          p1.get_hit(1)
+          next unless p1.alive?
+        end
         damage, _armor, mana, spells = apply_effects(spells)
         p1.gain(mana)
         p2.get_hit(damage) if damage > 0
@@ -110,7 +115,7 @@ module Year2015
     end
 
     def part_two
-      nil
+      Game.new(Wizard.new(50, 500), Player.new(*data), true).play_until_p1_wins
     end
 
     private
