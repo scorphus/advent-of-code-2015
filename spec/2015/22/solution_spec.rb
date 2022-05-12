@@ -37,11 +37,11 @@ RSpec.describe(Year2015::Player) do
 end
 
 RSpec.describe(Year2015::Wizard) do
-  let(:wizard) { described_class.new(10, 5, 100) }
+  let(:wizard) { described_class.new(10, 100) }
 
   it "is initialized with hit_points, damage and mana" do
     expect(wizard.hit_points).to(eq(10))
-    expect(wizard.damage).to(eq(5))
+    expect(wizard.damage).to(eq(0))
     expect(wizard.mana).to(eq(100))
   end
 
@@ -66,47 +66,74 @@ RSpec.describe(Year2015::Wizard) do
   it "can spend mana" do
     wizard.spend(5)
     expect(wizard.mana).to(eq(95))
+    expect(wizard.spent).to(eq(5))
   end
 end
 
 RSpec.describe(Year2015::Game) do
-  describe "run_effects" do
-    let(:game) { Year2015::Game.new(nil, nil) }
+  let(:game) { Year2015::Game.new(nil, nil) }
 
+  describe "cast_spell" do
+    it "returns 0 damage and 0 heal when effect" do
+      expect(game.cast_spell(:poison)).to(eq([0, 0]))
+    end
+
+    it "returns 4 damage and 0 heal when magic_missile" do
+      expect(game.cast_spell(:magic_missile)).to(eq([4, 0]))
+    end
+
+    it "returns 2 damage and 2 heal when drain" do
+      expect(game.cast_spell(:drain)).to(eq([2, 2]))
+    end
+  end
+
+  describe "apply_effects" do
     it "returns empty effects if none applied" do
-      expect(game.run_effects({})).to(eq([0, 0, 0, 0, {}]))
+      expect(game.apply_effects({})).to(eq([0, 0, 0, {}]))
     end
 
     it "returns empty effects if all of them wear off" do
-      expect(game.run_effects({
+      expect(game.apply_effects({
         magic_missile: 1,
         drain: 1,
         shield: 1,
         poison: 1,
         recharge: 1,
-      })).to(eq([9, 7, 2, 101, {}]))
+      })).to(eq([3, 7, 101, {}]))
     end
 
-    it "returns effects with remaining ones" do
-      expect(game.run_effects({
+    it "applies all and return remaining when all effects were just cast" do
+      expect(game.apply_effects({
         magic_missile: 1,
         drain: 1,
         shield: 6,
         poison: 6,
         recharge: 5,
-      })).to(eq([9, 7, 2, 101, {
+      })).to(eq([3, 7, 101, {
         shield: 5,
         poison: 5,
         recharge: 4,
       },]))
     end
 
+    it "returns effects with remaining ones" do
+      expect(game.apply_effects({
+        magic_missile: 1,
+        drain: 1,
+        shield: 1,
+        poison: 1,
+        recharge: 2,
+      })).to(eq([3, 7, 101, {
+        recharge: 1,
+      },]))
+    end
+
     it "wears effects of 1 turn" do
-      expect(game.run_effects({
+      expect(game.apply_effects({
         shield: 5,
         poison: 5,
         recharge: 4,
-      })).to(eq([3, 7, 0, 101, {
+      })).to(eq([3, 7, 101, {
         shield: 4,
         poison: 4,
         recharge: 3,

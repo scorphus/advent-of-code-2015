@@ -4,11 +4,11 @@ require "fc"
 
 module Year2015
   SPELLS = {
-    magic_missile: { cost: 53, damage: 4, armor: 0, heal: 0, mana: 0, turns: 1 },
-    drain: { cost: 73, damage: 2, armor: 0, heal: 2, mana: 0, turns: 1 },
-    shield: { cost: 113, damage: 0, armor: 7, heal: 0, mana: 0, turns: 6 },
-    poison: { cost: 173, damage: 3, armor: 0, heal: 0, mana: 0, turns: 6 },
-    recharge: { cost: 229, damage: 0, armor: 0, heal: 0, mana: 101, turns: 5 },
+    magic_missile: { cost: 53, damage: 4, armor: 0, heal: 0, mana: 0, turns: 1, effect: false },
+    drain: { cost: 73, damage: 2, armor: 0, heal: 2, mana: 0, turns: 1, effect: false },
+    shield: { cost: 113, damage: 0, armor: 7, heal: 0, mana: 0, turns: 6, effect: true },
+    poison: { cost: 173, damage: 3, armor: 0, heal: 0, mana: 0, turns: 6, effect: true },
+    recharge: { cost: 229, damage: 0, armor: 0, heal: 0, mana: 101, turns: 5, effect: true },
   }.freeze
 
   class Player
@@ -28,11 +28,12 @@ module Year2015
   end
 
   class Wizard < Player
-    def initialize(hit_points, damage, mana)
-      super(hit_points, damage)
+    def initialize(hit_points, mana)
+      super(hit_points, 0)
       @mana = mana
+      @spent = 0
     end
-    attr_reader :mana
+    attr_reader :mana, :spent
 
     def can_afford?(amount)
       @mana >= amount
@@ -48,6 +49,7 @@ module Year2015
 
     def spend(amount)
       @mana -= amount
+      @spent += amount
     end
   end
 
@@ -58,50 +60,53 @@ module Year2015
     end
 
     def play_until_p1_wins
-      start = [@p1, @p2, {}] # [player, opponent, effects]
       queue = FastContainers::PriorityQueue.new(:min)
-      queue.push(start, 0)
+      queue.push([@p1, @p2, {}], 0) # [player, opponent, spells]
       until queue.empty?
-        spent = queue.top_key
-        p1, p2, effects = queue.pop
-        damage, _armor, heal, mana, effects = run_effects(effects)
-        p1.heal(heal)
+        p1, p2, spells = queue.pop
+        damage, _armor, mana, spells = apply_effects(spells)
         p1.gain(mana)
-        p2.get_hit(damage)
-        SPELLS.keys.each do |spell|
-          cost = SPELLS[spell][:cost]
-          next if effects[spell] || !p1.can_afford?(cost)
+        p2.get_hit(damage) if damage > 0
+        SPELLS.each do |name, spell|
+          cost = spell[:cost]
+          next if !p1.can_afford?(cost) || spells[name]
 
           new_p1 = p1.dup
           new_p2 = p2.dup
-          new_effects = effects.dup.merge({ spell => SPELLS[spell][:turns] })
-          damage, armor, heal, mana, new_effects = run_effects(new_effects)
-          new_p2.get_hit(damage)
           new_p1.spend(cost)
+          damage, heal = cast_spell(name)
           new_p1.heal(heal)
+          new_p2.get_hit(damage) if damage > 0
+          new_spells = spells.merge({ name => spell[:turns] })
+          damage, armor, mana, new_spells = apply_effects(new_spells)
           new_p1.gain(mana)
+          new_p2.get_hit(damage) if damage > 0
+          return new_p1.spent unless new_p2.alive?
+
           new_p1.get_hit(new_p2.damage - armor)
-          queue.push([new_p1, new_p2, new_effects], spent + cost) if new_p1.alive?
-          return spent + cost unless new_p2.alive?
+          queue.push([new_p1, new_p2, new_spells], new_p1.spent) if new_p1.alive?
         end
       end
     end
 
-    def run_effects(effects)
-      effects.reduce([0, 0, 0, 0, {}]) do |(damage, armor, heal, mana, effects), (spell, turns)|
-        [damage + SPELLS[spell][:damage],
-         armor + SPELLS[spell][:armor],
-         heal + SPELLS[spell][:heal],
-         mana + SPELLS[spell][:mana],
-         turns > 1 ? effects.merge({ spell => turns - 1 }) : effects,]
+    def cast_spell(name)
+      SPELLS[name][:effect] ? [0, 0] : [SPELLS[name][:damage], SPELLS[name][:heal]]
+    end
+
+    def apply_effects(spells)
+      spells.select { |name, _turns| SPELLS[name][:effect] }
+        .reduce([0, 0, 0, {}]) do |(damage, armor, mana, spells), (name, turns)|
+        [damage + SPELLS[name][:damage],
+         armor + SPELLS[name][:armor],
+         mana + SPELLS[name][:mana],
+         turns > 1 ? spells.merge({ name => turns - 1 }) : spells,]
       end
     end
   end
 
   class Day22 < Solution
     def part_one
-      Game.new(Wizard.new(50, 0, 500), Player.new(*data))
-        .play_until_p1_wins
+      Game.new(Wizard.new(50, 500), Player.new(*data)).play_until_p1_wins
     end
 
     def part_two
