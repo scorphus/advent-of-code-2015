@@ -43,6 +43,10 @@ module Year2015
       end
       @registers
     end
+
+    def set(register, value)
+      @registers[register] = value
+    end
   end
 
   class Day23 < Solution
@@ -53,7 +57,9 @@ module Year2015
     end
 
     def part_two
-      nil
+      turin_lock = TurinLock.new(data)
+      turin_lock.set("a", 1)
+      turin_lock.run[DESIRED_REGISTER].to_i
     end
 
     private

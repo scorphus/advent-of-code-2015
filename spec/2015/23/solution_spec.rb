@@ -25,12 +25,13 @@ RSpec.describe(Year2015::Day23) do
   end
 
   describe "part two" do
-    it "returns nil for the example input" do
-      expect(described_class.part_two(example_input)).to(eq(nil))
+    it "gives 7 as the value in register a for example input" do
+      stub_const("Year2015::Day23::DESIRED_REGISTER", "a")
+      expect(described_class.part_two(example_input)).to(eq(7))
     end
 
-    it "returns nil for my input" do
-      expect(described_class.part_two(input)).to(eq(nil))
+    it "gives 334 as the value in register b for input" do
+      expect(described_class.part_two(input)).to(eq(334))
     end
   end
 end
