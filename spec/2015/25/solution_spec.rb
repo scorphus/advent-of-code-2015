@@ -48,12 +48,9 @@ RSpec.describe(Year2015::Day25) do
   end
 
   describe "part two" do
-    it "returns nil for the example input" do
-      expect(described_class.part_two(example_input_1)).to(eq(nil))
-    end
-
-    it "returns nil for my input" do
-      expect(described_class.part_two(input)).to(eq(nil))
+    it "starts the weather machine" do
+      expect(described_class.part_two(input))
+        .to(include("It comes to life!").and(include("Snow begins to fall.")))
     end
   end
 end

@@ -12,7 +12,11 @@ module Year2015
     end
 
     def part_two
-      nil
+      <<~EOF
+        You have enough stars to start the weather machine.
+        You fill the weather machine with fifty stars. It comes to life!
+        Snow begins to fall.
+      EOF
     end
   end
 end
