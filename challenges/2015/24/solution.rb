@@ -2,8 +2,8 @@
 
 module Year2015
   class Day24 < Solution
-    def hang_in_balance(packages)
-      group_weight = packages.sum / 3
+    def hang_in_balance(packages, num_groups = 3)
+      group_weight = packages.sum / num_groups
       (1..packages.size - 1)
         .reduce([Float::INFINITY, Float::INFINITY]) do |(min_qe, min_size), size|
           packages.combination(size).each do |combination|
@@ -26,7 +26,7 @@ module Year2015
     end
 
     def part_two
-      nil
+      hang_in_balance(data, 4)
     end
 
     private

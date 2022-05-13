@@ -30,12 +30,12 @@ RSpec.describe(Year2015::Day24) do
   end
 
   describe "part two" do
-    it "returns nil for the example input" do
-      expect(described_class.part_two(example_input)).to(eq(nil))
+    it "finds 44 as quantum entanglement of the first group with example input" do
+      expect(described_class.part_two(example_input)).to(eq(44))
     end
 
-    it "returns nil for my input" do
-      expect(described_class.part_two(input)).to(eq(nil))
+    it "finds 80393059 as quantum entanglement of the first group with input" do
+      expect(described_class.part_two(input)).to(eq(80393059))
     end
   end
 end
